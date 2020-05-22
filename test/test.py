@@ -1,0 +1,3 @@
+txt = '就同时包含了有线链路和无线链路的异构网络上的实时应用，提出了一种满足其端到端服务质量（QoS）需求的无线网络MAC（media access control）层调度法（real-time cross-layer scheduling algorithm for real-time application,称RTCLA）．该算法采用跨层的思想，结合了自适应调制编码（adaptive modulation and coding，简称AMC）技术和选择性自动请求重传（selective repeat-automatic repeat request，简称SR-ARQ）技术，在满足应用的系统误包率（packeterrorrate，简称PER）要求、尽可能减少基站中等待超时分组数目的前提下，提高系统吞吐性能和频谱利用率，通过仿真来验证算法分组超时率、平均系统有效吞吐率和公平性3个方面的性能，并与改进的比例公平算法（modified proportional fair,简称MPF）、最早到期优先（earliest deadline first，简称EDF）和改进的最大加权延时优先（modified largest weighted delay first，简称M-LWDF）等3种广泛使用的算法进行了比较．仿真结果还表明，综合考虑实时应用的严格时延要求和无线网络资源稀缺以及信道的时变特性，RTCLA更适合于对时延敏感的实时应用，尤其是分组超时率性能方面表现突出．此外，仿真结果还表明，RTCLA在稳定性方面的表现与其他3种算法基本相同。'
+
+print(txt.split('．'))

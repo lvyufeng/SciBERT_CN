@@ -1,3 +1,6 @@
+#data
+*.txt
+!*vocab.txt
 # vscode cache
 .vscode
 # Byte-compiled / optimized / DLL files
