@@ -105,4 +105,12 @@ python3 run_pretraining.py --input_file=$BERT_BASE_DIR/tf*.tfrecord  \
 
 ### 5. 下游任务测试和微调
 
-暂无
+#### 5.1. 命名实体识别
+
+共有两种方式:
+
+- 直接进行Fine-tuning
+- 抽取feature作为word_embeddiing,送入LSTM+CRF
+
+分别进行两种方式的测试,另外加入使用同样语料训练word2vec获得的词向量进行对比.
+
