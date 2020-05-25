@@ -1,7 +1,18 @@
-# BERT-Chinese-CS
+# SciBERT-CN
 针对中文计算机科技文献的预训练模型(基于国图分类，筛选所有属于TP3的文献)。
 
 由于项目需要（专业文本的自然语言处理），在维普提供海量科技文献文本，重庆市科学院提供算力支持的情况下，训练一个Domain Specific的预训练模型。
+
+**ALBERT Tiny版经测试在中文计算机类NER任务提升8%左右，具体见[5.1](#5.1)。** 测试数据已上传至[/data](https://github.com/lvyufeng/SciBERT-CN/tree/master/data)
+
+### 0. Pre-trained Model 下载
+
+- [ALBERT_TINY](https://pan.baidu.com/s/1S0baBA0RtHubdUAcuW9SqA)
+提取码: j5sp
+
+- [ALBERT_SMALL](https://pan.baidu.com/s/1ZBLUIkQQQoERZPd2CLQbjg) 
+提取码: 4a1o
+### 1. 数据与算力准备
 
 资源 | 统计 |
  -|-
@@ -9,8 +20,6 @@
 期刊数| 943
 文章数| 408187
 句子数| 1243300
-
-### 1. 数据准备
 
 使用维普提供的2000-2019年全国核心期刊数据(仅摘要), 将文本分句后写入文件，格式如下：
 
@@ -105,7 +114,7 @@ python3 run_pretraining.py --input_file=$BERT_BASE_DIR/tf*.tfrecord  \
 
 ### 5. 下游任务测试和微调
 
-#### 5.1. 命名实体识别
+#### 5.1. <span id="5.1">命名实体识别</span> 
 
 共有两种方式:
 
@@ -114,3 +123,38 @@ python3 run_pretraining.py --input_file=$BERT_BASE_DIR/tf*.tfrecord  \
 
 分别进行两种方式的测试,另外加入使用同样语料训练word2vec获得的词向量进行对比.
 
+直接使用[albert_zh](https://github.com/brightmart/albert_zh)提供的tiny版，fine-tuning效果如下：
+
+```
+INFO:tensorflow:  eval_f = 0.7053323
+INFO:tensorflow:  eval_precision = 0.7127047
+INFO:tensorflow:  eval_recall = 0.699311
+INFO:tensorflow:  global_step = 1205
+INFO:tensorflow:  loss = 299.08588
+```
+
+使用中文文献文本预训练后，fine-tuning效果如下：
+
+```
+INFO:tensorflow:  eval_f = 0.7896512
+INFO:tensorflow:  eval_precision = 0.805268
+INFO:tensorflow:  eval_recall = 0.77655727
+INFO:tensorflow:  global_step = 1205
+INFO:tensorflow:  loss = 201.72101
+```
+
+模型超参为：
+```
+learning rate: 1e-4
+epoch: 30
+batch_size: 32
+```
+
+可以看到125k步预训练的albert tiny一样能够在特定领域的下有任务有明显提升。此外下表还和前期的部分模型进行了对比。
+
+模型 | Precision | Recall | F1
+ -|-|-|-
+BERT+LSTM+CRF | 67.64 | 78.29 | 72.58
+BERT+Transformer+CRF | 71.75 | 80.00 | 75.65
+ALBERT Tiny(albert_zh)|71.27 | 69.93 |70.53
+**ALBERT Tiny(Ours)**| **80.52** | **77.65** | **78.96**
