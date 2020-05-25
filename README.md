@@ -7,6 +7,10 @@
 
 ### 0. Pre-trained Model 下载
 
+能科学上网的：
+- [ALBERT Model Release](https://github.com/lvyufeng/SciBERT-CN/releases/tag/0.1)
+
+国内通道：
 - [ALBERT_TINY](https://pan.baidu.com/s/1S0baBA0RtHubdUAcuW9SqA)
 提取码: j5sp
 
