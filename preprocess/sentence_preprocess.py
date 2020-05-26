@@ -66,7 +66,7 @@ def process_txt(raw_data):
             processed_data.append([abstract])
     return processed_data
 
-def main(conn, year, cn_class, data):
+def process_data(conn, year, cn_class, data):
     cs_data = get_area_data(conn,year,'TP3')
     processed_data = process_txt(cs_data)
     data.extend(processed_data)
@@ -74,14 +74,13 @@ def main(conn, year, cn_class, data):
     # sent_num = write_txt(processed_data,path)
     # print('article_num:{}, sent_num:{}'.format(len(cs_data),sent_num))
 
-if __name__ == "__main__":
-    # years = [2019]
+def main(args):
     years = [i for i in range(2000,2020)]
     threads = []
     data = []
     for i in years:
-        conn = connect('202.202.5.140',3306, 'root','cqu1701','cqvip') 
-        thread = threading.Thread(target=main, args=(conn,i,'TP3',data,))
+        conn = connect(args.ip,args.port, args.username,args.password,args.db) 
+        thread = threading.Thread(target=process_data, args=(conn,i,'TP3',data,))
         threads.append(thread)
     for i in threads:
         i.setDaemon(True)
@@ -89,4 +88,20 @@ if __name__ == "__main__":
     i.join()
     time.sleep(5)
     print('article_num:{}, sent_num:{}'.format(len(data), sum([len(i) for i in data])))
-    write_txt(data,'./cs_raw.txt')
+    write_txt(data,os.path.join(args.path,'cs_raw.txt'))
+
+if __name__ == "__main__":
+    # years = [2019]
+    parser = argparse.ArgumentParser(description='Connect mysql and extract data')
+    parser.add_argument('--ip',default='localhost')
+    parser.add_argument('--port', default='3306')
+    parser.add_argument('--user',default='root')
+    parser.add_argument('--passwd', default='passwd')
+    parser.add_argument('--db', default='db')
+    parser.add_argument('--path',default='./')
+    args = parser.parse_args()
+
+    main(args)
+    
+    
+    
